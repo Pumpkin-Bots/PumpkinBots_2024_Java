@@ -16,6 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  int testInt = 0;
 }
 //Tyler was here
 //Sean was here
