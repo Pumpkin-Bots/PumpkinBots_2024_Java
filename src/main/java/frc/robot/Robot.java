@@ -88,10 +88,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
+    // need to put this xbox controller stuff in a new sub-class of xboxcontroller
+    
     double leftX = xbox.getLeftX();
     double leftY = xbox.getLeftY();
+    
+    // need to move this code into the new xbox class method (to hide the drift calcs)
     if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
       double leftAngle = getAngle(leftX, leftY);
+// need to move this into the genAngle method
       leftAngle = leftAngle + 90;
       if (leftAngle > 360) {
         leftAngle = leftAngle - 360;
@@ -100,6 +105,10 @@ public class Robot extends TimedRobot {
     }
   }
 
+  // need to move getAngle into the new xboxcontroller subclass we create
+  // also need to add a getPower() method
+  // when moving into new class, add stick option to method - e.g. left or right
+  // decide if zero should be up or to the right
   private double getAngle(double x, double y) {
     switch (getQuadrant(x, y)) {
         case 1:
