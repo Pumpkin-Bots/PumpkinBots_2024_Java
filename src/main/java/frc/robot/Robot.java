@@ -86,6 +86,11 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double leftX = xbox.getLeftX();
+    double leftY = xbox.getLeftY();
+    double rightX = xbox.getRightX();
+    double rightY = xbox.getRightY();
+    
     if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
       System.err.println(xbox.getLeftX());
 
