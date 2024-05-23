@@ -87,15 +87,18 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    
     double leftX = xbox.getLeftX();
     double leftY = xbox.getLeftY();
-    double leftAngle = getAngle(leftX, leftY);
-    
-  /*   if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
-      System.err.println(xbox.getLeftX());
-*/
-    System.err.println(leftX + " " + leftY + " " + leftAngle);
-   }
+    if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
+      double leftAngle = getAngle(leftX, leftY);
+      leftAngle = leftAngle + 90;
+      if (leftAngle > 360) {
+        leftAngle = leftAngle - 360;
+      }
+      System.err.println("angle: " + leftAngle);
+    }
+  }
 
   private double getAngle(double x, double y) {
     switch (getQuadrant(x, y)) {
