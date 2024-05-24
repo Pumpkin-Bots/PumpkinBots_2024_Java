@@ -24,6 +24,11 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   XboxController xbox = new XboxController(0); // 0 is the USB Port to be used as indicated on the Driver Station
 
+  /*  note to self: should convert this to command trigger using this notation:
+CommandXboxController exampleCommandController = new CommandXboxController(1); // Creates a CommandXboxController on port 1.
+Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object for the `X` button on exampleCommandController
+
+*/
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
