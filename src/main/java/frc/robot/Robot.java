@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.controls.DutyCycleOut;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Drive;
 import frc.robot.commands.GetAngle;
+import frc.robot.commands.GetPower;
 import edu.wpi.first.wpilibj.XboxController;
 
 
@@ -94,9 +98,20 @@ public class Robot extends TimedRobot {
     double leftY = xbox.getLeftY();
     
     // need to move this code into the new xbox class method (to hide the drift calcs)
-    if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
+    if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07 || xbox.getLeftY() < -0.07 || xbox.getLeftY() > 0.07) {
       double leftAngle = GetAngle.getControllerAngle(leftX, leftY);
       System.err.println("angle: " + leftAngle);
+      double leftPower = GetPower.getPower(leftX, leftY);
+      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(leftPower));
+      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(leftPower));
+      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(leftPower));
+      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(leftPower));
+    }
+    else {
+      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0));
+      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(0));
+      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(0));
+      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(0));
     }
   }
 
