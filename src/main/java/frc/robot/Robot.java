@@ -89,14 +89,33 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
+    // need to put this xbox controller stuff in a new sub-class of xboxcontroller
+    
     double leftX = xbox.getLeftX();
     double leftY = xbox.getLeftY();
+    
+    // need to move this code into the new xbox class method (to hide the drift calcs)
     if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07) {
       double leftAngle = GetAngle.getControllerAngle(leftX, leftY);
       
       System.err.println("angle: " + leftAngle);
     }
   }
+
+  private double getAngle(double x, double y) {
+    switch (getQuadrant(x, y)) {
+        case 1:
+            return Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+        case 2:
+            return 180 - Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+        case 3:
+            return 180 + (-1 * Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI);
+        case 4:
+            return 360 + Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+        default:
+            return 0;
+    }
+}
 
 /**
  * @return The selected quadrant.
