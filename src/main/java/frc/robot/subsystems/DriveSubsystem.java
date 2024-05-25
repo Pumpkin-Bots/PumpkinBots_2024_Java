@@ -22,6 +22,7 @@ public class DriveSubsystem extends SubsystemBase {
     return runOnce(
         () -> {
           /* one-time action goes here */
+          System.err.println("pressed B. drivecommand runonce");
         });
   }
 
@@ -38,6 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.err.println("drivecommand periodic");
   }
 
   @Override
