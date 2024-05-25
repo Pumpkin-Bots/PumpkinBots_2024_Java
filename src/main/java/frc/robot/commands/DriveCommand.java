@@ -25,11 +25,17 @@ public class DriveCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.err.println("pressed B. drivecommand runonce");
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+    System.err.println("drivecommand periodic");
+  }
 
   // Called once the command ends or is interrupted.
   @Override
