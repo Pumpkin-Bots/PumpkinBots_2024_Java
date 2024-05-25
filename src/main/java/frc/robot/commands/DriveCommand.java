@@ -26,7 +26,7 @@ public class DriveCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.err.println("pressed B. drivecommand runonce");
+    System.err.println("pressed B. drivecommand initialize");
 
   }
 

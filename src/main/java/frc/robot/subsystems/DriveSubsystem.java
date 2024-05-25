@@ -11,6 +11,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveSubsystemConstants;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import java.util.function.BooleanSupplier;
 
 public class DriveSubsystem extends SubsystemBase {
   private final TalonFX m_backRightSteerMotor = new TalonFX(DriveSubsystemConstants.kBackRightSteerMotorPort);
@@ -27,13 +29,15 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return a command
    */
-  public Command driveCommand() {
+
+   /* drives the robot */
+  public Command driveRobot() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
           /* one-time action goes here */
-          System.err.println("pressed B. drivecommand runonce");
+          System.err.println("pressed B. driveRobot runonce");
          // Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0.1));
           
         });
@@ -44,9 +48,10 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-  public boolean exampleCondition() {
+  public boolean leftJoystickTriggered() {
     // Query some boolean state, such as a digital sensor.
-    return false;
+    BooleanSupplier sup = () -> true;
+    return (sup.getAsBoolean());
   }
 
   @Override

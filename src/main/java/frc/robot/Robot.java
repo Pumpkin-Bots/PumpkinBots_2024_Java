@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj.XboxController;
-
+import frc.robot.Constants.OperatorConstants;
 
 
 /**
@@ -25,7 +25,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  XboxController xbox = new XboxController(0); // 0 is the USB Port to be used as indicated on the Driver Station
+//  XboxController xbox = new XboxController(OperatorConstants.kDriverControllerPort); 
+  // 0 is the USB Port to be used fopr the xbox controller as indicated on the Driver Station
 
   /*  note to self: should convert this to command trigger using this notation:
 CommandXboxController exampleCommandController = new CommandXboxController(1); // Creates a CommandXboxController on port 1.

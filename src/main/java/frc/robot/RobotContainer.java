@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -43,13 +44,16 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_driveSubsystem::exampleCondition)
+   /*  new Trigger(m_driveSubsystem::leftJoystickTriggered)
+        .onTrue(new DriveCommand(m_driveSubsystem));
+*/
+       new Trigger(m_driveSubsystem::leftJoystickTriggered)
         .onTrue(new DriveCommand(m_driveSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_driveSubsystem.driveCommand());
-    System.err.println("configure bindings");
+  //  m_driverController.axisGreaterThan(1, 0.07).whileTrue(m_driveSubsystem.driveRobot());
+  //  System.err.println("configure bindings");
   }
 
   /**

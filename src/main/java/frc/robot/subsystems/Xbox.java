@@ -12,4 +12,8 @@ public class Xbox {
     public static double leftStickPower = GetPower.getPower(leftY, leftX);
     public static double leftStickAngle = GetAngle.getControllerAngle(leftX, leftY);
     public static boolean leftStickDrift = (leftStickPower > 0.07);
+    
+    public static boolean leftStickDriftB() {
+        return leftStickPower > 0.07;
+    }
 }
