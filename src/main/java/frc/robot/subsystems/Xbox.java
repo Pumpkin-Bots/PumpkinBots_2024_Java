@@ -4,6 +4,7 @@ import frc.robot.commands.GetAngle;
 import frc.robot.commands.GetPower;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
 
 public class Xbox {
     public static XboxController xbox = new XboxController(0);
@@ -13,7 +14,5 @@ public class Xbox {
     public static double leftStickAngle = GetAngle.getControllerAngle(leftX, leftY);
     public static boolean leftStickDrift = (leftStickPower > 0.07);
     
-    public static boolean leftStickDriftB() {
-        return leftStickPower > 0.07;
-    }
+    
 }
