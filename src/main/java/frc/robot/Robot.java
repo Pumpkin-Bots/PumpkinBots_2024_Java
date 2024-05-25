@@ -102,7 +102,7 @@ Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object 
     //double leftY = xbox.getLeftY();
     
     // need to move this code into the new xbox class method (to hide the drift calcs)
-    if (Xbox.leftStickDrift) {
+   /*  if (Xbox.leftStickDrift) {
       
       System.err.println("angle: " + Xbox.leftX);
       
@@ -117,6 +117,7 @@ Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object 
       Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(0));
       Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(0));
     }
+    */
   }
 
 /**
