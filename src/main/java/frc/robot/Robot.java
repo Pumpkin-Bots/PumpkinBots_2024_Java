@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Drive;
-import frc.robot.commands.GetAngle;
-import frc.robot.commands.GetPower;
+import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj.XboxController;
 
 
@@ -99,18 +98,18 @@ Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object 
     
     // need to put this xbox controller stuff in a new sub-class of xboxcontroller
     
-    double leftX = xbox.getLeftX();
-    double leftY = xbox.getLeftY();
+    //double leftX = xbox.getLeftX();
+    //double leftY = xbox.getLeftY();
     
     // need to move this code into the new xbox class method (to hide the drift calcs)
-    if (xbox.getLeftX() > 0.07 || xbox.getLeftX() < -0.07 || xbox.getLeftY() < -0.07 || xbox.getLeftY() > 0.07) {
-      double leftAngle = GetAngle.getControllerAngle(leftX, leftY);
-      System.err.println("angle: " + leftAngle);
-      double leftPower = GetPower.getPower(leftX, leftY);
-      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(leftPower));
-      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(leftPower));
-      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(leftPower));
-      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(leftPower));
+    if (Xbox.leftStickDrift) {
+      
+      System.err.println("angle: " + Xbox.leftX);
+      
+      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
+      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
+      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
+      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
     }
     else {
       Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0));

@@ -7,7 +7,6 @@ public class GetPower {
         y = y * y;
         hypotenuse = x + y;
         hypotenuse = Math.sqrt(hypotenuse);
-        System.err.println(hypotenuse);
         return hypotenuse;
 
     }
