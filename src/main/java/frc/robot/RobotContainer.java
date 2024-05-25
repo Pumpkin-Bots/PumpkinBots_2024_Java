@@ -47,13 +47,13 @@ public class RobotContainer {
    /*  new Trigger(m_driveSubsystem::leftJoystickTriggered)
         .onTrue(new DriveCommand(m_driveSubsystem));
 */
-       //new Trigger(m_driveSubsystem::leftJoystickTriggered)
-       // .onTrue(new DriveCommand(m_driveSubsystem));
+       new Trigger(m_driveSubsystem::leftJoystickTriggered)
+        .onTrue(new DriveCommand(m_driveSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-       m_driverController.b().whileTrue(m_driveSubsystem.driveRobot());
-       System.err.println("configure bindings");
+    //   m_driverController.b().whileTrue(m_driveSubsystem.driveRobot());
+    //   System.err.println("configure bindings");
   }
 
   /**
