@@ -10,15 +10,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DriveSubsystemConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final TalonFX m_backRightSteerMotor = new TalonFX(OperatorConstants.kBackRightSteerMotorPort);
-  private final TalonFX m_frontRightSteerMotor = new TalonFX(OperatorConstants.kFrontRightSteerMotorPort);
-  private final TalonFX m_frontLeftSteerMotor = new TalonFX(OperatorConstants.kFrontLeftSteerMotorPort);
-  private final TalonFX m_backLeftSteerMotor = new TalonFX(OperatorConstants.kBackLeftSteerMotorPort);
-  private final Pigeon2 m_Pigeon2 = new Pigeon2(OperatorConstants.kPigeonPort);
-
+  private final TalonFX m_backRightSteerMotor = new TalonFX(DriveSubsystemConstants.kBackRightSteerMotorPort);
+  private final TalonFX m_frontRightSteerMotor = new TalonFX(DriveSubsystemConstants.kFrontRightSteerMotorPort);
+  private final TalonFX m_frontLeftSteerMotor = new TalonFX(DriveSubsystemConstants.kFrontLeftSteerMotorPort);
+  private final TalonFX m_backLeftSteerMotor = new TalonFX(DriveSubsystemConstants.kBackLeftSteerMotorPort);
+  private final Pigeon2 m_Pigeon2 = new Pigeon2(DriveSubsystemConstants.kPigeonPort);
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {}
@@ -36,6 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
           /* one-time action goes here */
           System.err.println("pressed B. drivecommand runonce");
          // Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0.1));
+          
         });
   }
 
