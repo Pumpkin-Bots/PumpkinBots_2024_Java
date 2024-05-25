@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -50,10 +49,13 @@ public class RobotContainer {
        new Trigger(m_driveSubsystem::leftJoystickTriggered)
         .onTrue(new DriveCommand(m_driveSubsystem));
 
+    //    new Trigger(m_driverController.b())
+    //    .onTrue(new DriveCommand(m_driveSubsystem));
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //   m_driverController.b().whileTrue(m_driveSubsystem.driveRobot());
-    //   System.err.println("configure bindings");
+       System.err.println("configure bindings");
   }
 
   /**

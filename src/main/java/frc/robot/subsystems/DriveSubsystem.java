@@ -50,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean leftJoystickTriggered() {
     // Query some boolean state, such as a digital sensor.
     BooleanSupplier sup = () -> true;
-    return (sup.getAsBoolean());
+    return sup.getAsBoolean();
   }
 
   @Override
