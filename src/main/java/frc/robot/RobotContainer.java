@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.GetQuadrant;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,6 +32,37 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
   }
+
+  public static double getControllerAngle(double x, double y) {
+    switch (GetQuadrant.getControllerQuadrant(x, y)) {
+      case 1:
+        return (Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI) + 90;
+      case 2:
+        return (180 - Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI) + 90;
+      case 3:
+        return (180 + (-1 * Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI)) + 90;
+      case 4:
+        return ((360 + Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI) - 270);
+      default:
+        return 0;
+    }
+  }
+  public static int getControllerQuadrant(double x, double y) {
+    if (x >= 0) {
+        return y >= 0 ? 1 : 4;
+    } else {
+        return y >= 0 ? 2 : 3;
+    }
+  }
+  public static double getPower(double x, double y) {
+    double hypotenuse;
+    x = x * x;
+    y = y * y;
+    hypotenuse = x + y;
+    hypotenuse = Math.sqrt(hypotenuse);
+    return hypotenuse;
+  }
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
