@@ -4,63 +4,178 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveSubsystemConstants;
-import java.util.function.BooleanSupplier;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final TalonFX m_backRightSteerMotor = new TalonFX(DriveSubsystemConstants.kBackRightSteerMotorPort);
-  private final TalonFX m_frontRightSteerMotor = new TalonFX(DriveSubsystemConstants.kFrontRightSteerMotorPort);
-  private final TalonFX m_frontLeftSteerMotor = new TalonFX(DriveSubsystemConstants.kFrontLeftSteerMotorPort);
-  private final TalonFX m_backLeftSteerMotor = new TalonFX(DriveSubsystemConstants.kBackLeftSteerMotorPort);
-  private final Pigeon2 m_Pigeon2 = new Pigeon2(DriveSubsystemConstants.kPigeonPort);
+  // Robot swerve modules
+  private final SwerveModule m_frontLeft =
+      new SwerveModule(
+          DriveConstants.kFrontLeftDriveMotorPort,
+          DriveConstants.kFrontLeftTurningMotorPort,
+          DriveConstants.kFrontLeftDriveEncoderPorts,
+          DriveConstants.kFrontLeftTurningEncoderPorts,
+          DriveConstants.kFrontLeftDriveEncoderReversed,
+          DriveConstants.kFrontLeftTurningEncoderReversed);
+
+  private final SwerveModule m_rearLeft =
+      new SwerveModule(
+          DriveConstants.kRearLeftDriveMotorPort,
+          DriveConstants.kRearLeftTurningMotorPort,
+          DriveConstants.kRearLeftDriveEncoderPorts,
+          DriveConstants.kRearLeftTurningEncoderPorts,
+          DriveConstants.kRearLeftDriveEncoderReversed,
+          DriveConstants.kRearLeftTurningEncoderReversed);
+
+  private final SwerveModule m_frontRight =
+      new SwerveModule(
+          DriveConstants.kFrontRightDriveMotorPort,
+          DriveConstants.kFrontRightTurningMotorPort,
+          DriveConstants.kFrontRightDriveEncoderPorts,
+          DriveConstants.kFrontRightTurningEncoderPorts,
+          DriveConstants.kFrontRightDriveEncoderReversed,
+          DriveConstants.kFrontRightTurningEncoderReversed);
+
+  private final SwerveModule m_rearRight =
+      new SwerveModule(
+          DriveConstants.kRearRightDriveMotorPort,
+          DriveConstants.kRearRightTurningMotorPort,
+          DriveConstants.kRearRightDriveEncoderPorts,
+          DriveConstants.kRearRightTurningEncoderPorts,
+          DriveConstants.kRearRightDriveEncoderReversed,
+          DriveConstants.kRearRightTurningEncoderReversed);
+
+  // The gyro sensor
+  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+
+  // Odometry class for tracking robot pose
+  SwerveDriveOdometry m_odometry =
+      new SwerveDriveOdometry(
+          DriveConstants.kDriveKinematics,
+          m_gyro.getRotation2d(),
+          new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+          });
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {}
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-
-   /* drives the robot */
-  public Command driveRobot() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-          System.err.println("pressed B. driveRobot runonce");
-         // Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0.1));
-          
+  @Override
+  public void periodic() {
+    // Update the odometry in the periodic block
+    m_odometry.update(
+        m_gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
         });
   }
 
   /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   * Returns the currently-estimated pose of the robot.
    *
-   * @return value of some boolean subsystem state, such as a digital sensor.
+   * @return The pose.
    */
-  public boolean leftJoystickTriggered() {
-    // Query some boolean state, such as a digital sensor.
-    BooleanSupplier sup = () -> true;
-    return sup.getAsBoolean();
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(
+        m_gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+        },
+        pose);
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   * @param rot Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    var swerveModuleStates =
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            ChassisSpeeds.discretize(
+                fieldRelative
+                    ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                        xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+                    : new ChassisSpeeds(xSpeed, ySpeed, rot),
+                DriveConstants.kDrivePeriod));
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  /**
+   * Sets the swerve ModuleStates.
+   *
+   * @param desiredStates The desired SwerveModule states.
+   */
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_rearLeft.setDesiredState(desiredStates[2]);
+    m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  /** Resets the drive encoders to currently read a position of 0. */
+  public void resetEncoders() {
+    m_frontLeft.resetEncoders();
+    m_rearLeft.resetEncoders();
+    m_frontRight.resetEncoders();
+    m_rearRight.resetEncoders();
+  }
+
+  /** Zeroes the heading of the robot. */
+  public void zeroHeading() {
+    m_gyro.reset();
+  }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+    return m_gyro.getRotation2d().getDegrees();
+  }
+
+  /**
+   * Returns the turn rate of the robot.
+   *
+   * @return The turn rate of the robot, in degrees per second
+   */
+  public double getTurnRate() {
+    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 }

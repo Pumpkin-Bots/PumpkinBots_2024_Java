@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Xbox;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -67,6 +65,13 @@ Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object 
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector",
+     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+     * = new MyAutoCommand(); break; case "Default Auto": default:
+     * autonomousCommand = new ExampleCommand(); break; }
+     */
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -90,38 +95,7 @@ Trigger xButton = exampleCommandController.x(); // Creates a new Trigger object 
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    
-  
-    
-    // need to put this xbox controller stuff in a new sub-class of xboxcontroller
-    
-    //double leftX = xbox.getLeftX();
-    //double leftY = xbox.getLeftY();
-    
-    // need to move this code into the new xbox class method (to hide the drift calcs)
-   /*  if (Xbox.leftStickDrift) {
-      
-      System.err.println("angle: " + Xbox.leftX);
-      
-      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
-      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
-      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
-      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(Xbox.leftStickPower));
-    }
-    else {
-      Drive.m_backRightSteerMotor.setControl(new DutyCycleOut(0));
-      Drive.m_frontRightSteerMotor.setControl(new DutyCycleOut(0));
-      Drive.m_frontLeftSteerMotor.setControl(new DutyCycleOut(0));
-      Drive.m_backLeftSteerMotor.setControl(new DutyCycleOut(0));
-    }
-    */
-  }
-
-/**
- * @return The selected quadrant.
- */
-
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
