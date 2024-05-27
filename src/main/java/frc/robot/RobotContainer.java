@@ -8,10 +8,12 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.GetQuadrant;
+import frc.robot.inputs.HIDDevice;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.SuperStructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,8 +26,11 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+//  private final CommandXboxController m_driverController =
+//      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final SuperStructure superStructure = new SuperStructure();
+  private final HIDDevice mainController = new HIDDevice(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -74,12 +79,24 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    System.out.println("Configuring Bindings");
+    mainController
+            .buttonB
+            .onTrue(superStructure.testCommand());
+    m_driveSubsystem.setDefaultCommand(
+            m_driveSubsystem.run(
+                    () -> m_driveSubsystem.acceptTeleopInput(
+                            mainController.getLeftStickX(),
+                            mainController.getLeftStickY()
+                    )
+            ).withName("Main Controller Teleop Input")
+    );
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
    /*  new Trigger(m_driveSubsystem::leftJoystickTriggered)
         .onTrue(new DriveCommand(m_driveSubsystem));
 */
-       new Trigger(m_driveSubsystem::leftJoystickTriggered)
-        .onTrue(new DriveCommand(m_driveSubsystem));
+//       new Trigger(m_driveSubsystem::leftJoystickTriggered)
+//        .onTrue(new DriveCommand(m_driveSubsystem));
 
     //    new Trigger(m_driverController.b())
     //    .onTrue(new DriveCommand(m_driveSubsystem));
@@ -87,7 +104,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //   m_driverController.b().whileTrue(m_driveSubsystem.driveRobot());
-       System.err.println("configure bindings");
+//       System.err.println("configure bindings");
   }
 
   /**

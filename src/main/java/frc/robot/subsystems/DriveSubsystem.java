@@ -53,6 +53,10 @@ public class DriveSubsystem extends SubsystemBase {
     return sup.getAsBoolean();
   }
 
+  public void acceptTeleopInput(double controllerX, double controllerY) {
+    System.out.println("Teleop Input: x=" + controllerX + ", y=" + controllerY);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
