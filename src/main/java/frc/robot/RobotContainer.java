@@ -84,15 +84,17 @@ public class RobotContainer {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(DriveConstants.kDriveKinematics);
 
+    Pose2d kZeroPose = new Pose2d();
+    Rotation2d kZeroRotation = new Rotation2d();
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
-            Pose2d.kZero,
+            kZeroPose,
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, Rotation2d.kZero),
+            new Pose2d(3, 0, kZeroRotation),
             config);
 
     var thetaController =
